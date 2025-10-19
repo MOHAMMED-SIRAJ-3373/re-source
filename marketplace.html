@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Marketplace — UAE Surplus</title>
+  <meta name="description" content="Browse UAE surplus inventory — search, filter and sort items from verified UAE businesses." />
+  <style>
+    :root{
+      --accent:#ff7a18; --muted:#6b7280; --card:#fff; --max:1200px; --radius:14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:#f8fafc;color:#0f172a;line-height:1.45;transition:background 0.3s ease;}
+    body:hover{background:#f1f5f9;}
+    a{text-decoration:none;color:inherit;transition:color 0.3s;}
+    a:hover{color:var(--accent);}
+    .container{max-width:var(--max);margin:0 auto;padding:0 18px;position:relative}
+
+    /* Topbar */
+    header.topbar{
+      background:#071028;color:white;border-bottom:4px solid var(--accent);
+      position:sticky;top:0;z-index:999;
+      animation: slideDown 0.7s ease forwards;
+    }
+    header .container{display:flex;flex-direction:column;gap:8px;padding:20px 18px}
+    @media(min-width:900px){ header .container{flex-direction:row;align-items:center;justify-content:space-between} }
+
+    .brand{font-weight:800;font-size:22px;letter-spacing:1px;}
+    .subtitle{color:rgba(255,255,255,0.85);font-size:14px;}
+
+    /* Buttons */
+    .btn{padding:10px 14px;border-radius:12px;background:var(--accent);color:white;font-weight:700;border:none;cursor:pointer;
+      transition:all 0.3s ease;}
+    .btn:hover{transform:translateY(-2px) scale(1.05);box-shadow:0 10px 20px rgba(255,122,24,0.4);}
+    .btn.ghost{background:transparent;border:1px solid rgba(10,37,64,0.06);color:#0f172a;}
+    .btn.ghost:hover{background:var(--accent);color:white;transform:scale(1.05);}
+
+    /* Search */
+    .search-wrap{background:#fff;padding:18px;border-radius:18px;margin-top:-18px;
+      box-shadow:0 10px 40px rgba(10,37,64,0.08);border:1px solid rgba(10,37,64,0.04);
+      animation: fadeIn 1s ease;}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .flex-1{flex:1;min-width:180px}
+    input[type="search"], select{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(10,37,64,0.08);font-size:15px;transition:all 0.3s;}
+    input[type="search"]:focus, select:focus{border-color:var(--accent);box-shadow:0 4px 12px rgba(255,122,24,0.2);outline:none;}
+
+    /* Meta */
+    .meta{display:flex;align-items:center;justify-content:space-between;margin:16px 0;color:var(--muted);font-size:14px;}
+
+    /* Product Grid */
+    .grid{display:grid;gap:24px;grid-template-columns:1fr;}
+    @media(min-width:700px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media(min-width:1000px){ .grid{grid-template-columns:repeat(3,1fr)} }
+
+    .card{background:#fff;border-radius:16px;overflow:hidden;border:1px solid rgba(0,0,0,0.08);
+      box-shadow:0 8px 20px rgba(10,37,64,0.06);transition:transform 0.3s ease, box-shadow 0.3s ease, color 0.3s;display:flex;flex-direction:column;cursor:pointer;
+      animation: fadeInUp 0.8s ease forwards;}
+    .card:hover{transform:translateY(-6px) rotateZ(-1deg) scale(1.03);box-shadow:0 15px 35px rgba(10,37,64,0.15);}
+    .thumb{height:220px;background-size:cover;background-position:center;position:relative;transition:transform 0.5s;}
+    .card:hover .thumb{transform:scale(1.08);}
+    .card-body{padding:18px;display:flex;flex-direction:column;flex:1;}
+    .category-tag{display:inline-block;border:1px solid var(--accent);color:var(--accent);font-weight:600;padding:5px 12px;border-radius:999px;font-size:12px;margin-bottom:10px;transition:all 0.3s;}
+    .card:hover .category-tag{background:var(--accent);color:white;}
+    .title{font-size:18px;font-weight:700;margin:2px 0 6px;transition:color 0.3s;}
+    .card:hover .title{color:var(--accent);}
+    .description{color:var(--muted);font-size:14px;line-height:1.5;margin-bottom:10px;flex-grow:1;transition:color 0.3s;}
+    .card:hover .description{color:#111;}
+    .seller-info{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);margin-bottom:12px;}
+    .verified{display:inline-block;background:#22c55e;color:#fff;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px;width:max-content;animation: pulse 1.5s infinite;}
+
+    .price-row{display:flex;align-items:center;justify-content:space-between;}
+    .price{font-size:18px;font-weight:800;color:#0f172a;transition:color 0.3s;}
+    .card:hover .price{color:var(--accent);}
+    .btn.viewBtn{background:var(--accent);color:#fff;border:none;border-radius:12px;font-weight:600;padding:8px 16px;font-size:14px;cursor:pointer;transition:all 0.3s ease;}
+    .btn.viewBtn:hover{transform:scale(1.08) rotateZ(-1deg);box-shadow:0 8px 25px rgba(255,122,24,0.4);}
+
+    /* Footer */
+    footer{padding:22px 0;text-align:center;color:var(--muted);font-size:14px}
+
+    /* Empty State */
+    .empty{text-align:center;margin-top:40px;font-size:16px;color:var(--muted);animation: fadeIn 1s ease;}
+    .empty h3{margin:10px 0 6px;font-size:24px;}
+
+    /* Animations */
+    @keyframes slideDown{from{transform:translateY(-100px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+    @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);} }
+    @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);} }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="container">
+      <div>
+        <div class="brand"><a href="index.html">Re-Source</a></div>
+        <div class="subtitle">Browse quality surplus items from verified UAE businesses</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center">
+        <a href="index.html" class="btn ghost">Home</a>
+        <a href="profile.html" class="btn">Profile</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container" style="margin-top:18px">
+    <div class="search-wrap">
+      <div class="row" style="align-items:center">
+        <div class="flex-1">
+          <input id="search" type="search" placeholder="Search products, descriptions, SKUs..." />
+        </div>
+        <div style="width:200px;">
+          <select id="category">
+            <option value="all">All Categories</option>
+            <option>Electronics</option>
+            <option>Industrial Equipment</option>
+            <option>Office Furniture</option>
+            <option>IT Hardware</option>
+            <option>Machinery</option>
+            <option>Vehicles</option>
+            <option>Tools</option>
+            <option>Building Materials</option>
+            <option>Medical Equipment</option>
+          </select>
+        </div>
+        <div style="width:170px;">
+          <select id="sortBy">
+            <option value="-discount">Sort By</option>
+            <option value="price">Price: Low → High</option>
+            <option value="-price">Price: High → Low</option>
+          </select>
+        </div>
+        <div>
+          <button id="clearBtn" class="btn ghost">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="meta" style="margin-top:14px">
+      <div id="resultsText">Showing 0 results</div>
+      <div style="color:var(--muted)">Tip: press Enter to search</div>
+    </div>
+
+    <div id="productsGrid" class="grid" aria-live="polite"></div>
+
+    <div id="emptyState" class="empty" style="display:none">
+      <div style="font-size:36px;color:#cbd5e1">🔍</div>
+      <h3 style="margin:10px 0 6px">No products found</h3>
+      <div>Try changing filters or search terms</div>
+    </div>
+  </main>
+
+  <footer>
+    <div>© <span id="year"></span> Re-Source — Demo</div>
+  </footer>
+
+  <script>
+    const PRODUCTS = [
+
+    { id:1, name:"Solar Panels - Masdar city Installation Surplus", description:"High-efficiency Canadian Solar 450W monocrystalline panels from Masdar City project surplus. Ideal for residential, commercial, or off-grid energy solutions. Panels are lightly used, tested, and come with robust frames suitable for rooftop or ground-mounted installations.", category:"Building Materials", condition:"Good", price:1200, quantity:15, image:"https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80", location:"Dubai", created_date:"2025-09-20" },
+  { id:2, name:"Ergonomic Office Chairs (Bulk Lot)", description:"Assorted ergonomic chairs designed for optimal lumbar support and comfort, suitable for startups, offices, or co-working spaces. Each chair has adjustable height, swivel, and tilt functions. Gently used but in excellent working condition, bulk lot of 20 units.", category:"Office Furniture", condition:"Like New", price:800, quantity:20, image:"https://images.thdstatic.com/productImages/f88ea17b-9545-4294-859a-da704cc5c2c7/svn/black-costway-guest-office-chairs-hcst01502-64_600.jpg", location:"Sharjah", created_date:"2025-09-28" },
+  { id:3, name:"Server Rack 42U", description:"Dell-certified 42U server rack in excellent condition. Includes lockable doors, cable management, and adjustable mounting rails. Ideal for secure IT server deployment.", category:"IT Hardware", condition:"Like New", price:1500, quantity:3, image:"https://download.schneider-electric.com/files?p_Doc_Ref=PB501421&p_File_Type=rendition_369_jpg&default_image=DefaultProductImage.png", location:"Abu Dhabi", created_date:"2025-10-01" },
+  { id:4, name:"Bulk Laptops (HP, Dell)", description:"Refurbished bulk lot of 15 laptops, perfect for offices or educational institutions. Tested, updated, and pre-installed with productivity software. Warranty included where applicable.", category:"IT Hardware", condition:"Good", price:7000, quantity:15, image:"https://cpimg.tistatic.com/08230342/b/5/extra-08230342.jpg", location:"Dubai", created_date:"2025-08-15" },
+  { id:5, name:"Industrial Air Compressor", description:"Heavy-duty 185 CFM compressor, ideal for workshops or small manufacturing. Recently serviced, suitable for pneumatic tools, spray painting, and high-volume air operations.", category:"Machinery", condition:"Good", price:4000, quantity:2, image:"https://kandasrental.com/wp-content/uploads/2023/06/185-CFM-AIRCOMPRESSOR.jpg", location:"Sharjah", created_date:"2025-07-12" },
+  { id:6, name:"Forklift (Electric)", description:"Electric forklift with low hours, fully functional, eco-friendly, and perfect for warehouses or factories. Easy maneuverability with safety features for indoor use.", category:"Vehicles", condition:"Like New", price:9000, quantity:1, image:"https://cdn.truckscout24.com/data/listing/img/vga/ts/10/34/19609211-01.jpg?v=1755003969", location:"Dubai", created_date:"2025-06-20" },
+  { id:7, name:"Pallets of Branded Headphones", description:"Bulk lot of 25 open-box branded headphones. Tested for quality and functionality. Ideal for resale or promotional purposes. Includes popular premium brands.", category:"Electronics", condition:"Like New", price:4800, quantity:25, image:"https://images.merstatic.com/imgcache/resized/images/offer/2021/05/11/whatsapp-image-2021-05-10-at-140944-4-1620725042-1620725659.jpeg", location:"Dubai", created_date:"2025-10-14" },
+  { id:8, name:"Construction Tools Bulk Lot", description:"Mixed set of tools for small construction businesses. Includes hammers, drills, saws, and measuring equipment. All tools functional and lightly used.", category:"Tools", condition:"Fair", price:650, quantity:30, image:"https://i.redd.it/bulk-tool-estimate-help-needed-v0-3vibificwr9c1.jpg?width=1880&format=pjpg&auto=webp&s=a0a0e40d1b8ecb02f4a15720daae6ea5bf057c51", location:"Ajman", created_date:"2025-08-05" },
+  { id:9, name:"Building Materials — Tiles (Pallet)", description:"Mixed-size ceramic and porcelain tiles. Durable, scratch-resistant, perfect for renovations or small construction projects.", category:"Building Materials", condition:"New", price:2200, quantity:50, image:"https://www.shutterstock.com/image-photo/paving-slabs-factory-tiles-piled-260nw-1060959992.jpg", location:"Dubai", created_date:"2025-06-11" },
+  { id:10, name:"LED Monitors (Bulk Lot)", description:"20 units of 24-inch LED monitors, full HD resolution, energy-efficient, slim design. Ideal for office setups, schools, or training centers.", category:"IT Hardware", condition:"Like New", price:4000, quantity:20, image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSebJQFV7qRu0TOg_63AE2U6WQrJoL_E2hwpg&s", location:"Sharjah", created_date:"2025-09-30" },
+  { id:11, name:"Medical Equipment - Abu Dhabi Hospital Upgrade", description:"Hospital-grade furniture and equipment from Abu Dhabi modernization. Includes adjustable patient beds, examination tables, and storage units. Sanitized and tested for immediate use.", category:"Medical Equipment", condition:"Like New", price:8000, quantity:5, image:"https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80", location:"Abu Dhabi", created_date:"2025-10-18" },
+  { id:12, name:"Air Conditioning Units - Sharjah Villa Complex", description:"Split AC units (1.5-3 ton) from Sharjah renovation. Brands: Samsung, LG, Daikin. Energy-efficient, excellent working condition, includes installation brackets. Suitable for villas, offices, or small commercial spaces.", category:"Industrial Equipment", condition:"Like New", price:3500, quantity:10, image:"https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80", location:"Sharjah", created_date:"2025-10-18" } ]
+    const productsGrid = document.getElementById('productsGrid');
+    const searchInput = document.getElementById('search');
+    const categorySelect = document.getElementById('category');
+    const sortSelect = document.getElementById('sortBy');
+    const resultsText = document.getElementById('resultsText');
+    const emptyState = document.getElementById('emptyState');
+    const yearEl = document.getElementById('year');
+    yearEl.textContent = new Date().getFullYear();
+
+    function renderProduct(p){
+      return `
+        <article class="card" onclick="window.location.href='ProductDetail.html?id=${p.id}'" style="cursor:pointer;">
+          <div class="thumb" style="background-image:url('${p.image}')"></div>
+          <div class="card-body">
+            <div class="category-tag">${p.category}</div>
+            <div class="title">${p.name}</div>
+            <div class="description">${p.description}</div>
+            <div class="seller-info">
+              <div><i>📍</i> ${p.location}</div>
+              <div class="verified">Verified</div>
+              <div><strong>${p.quantity}</strong> units available</div>
+            </div>
+            <div class="price-row">
+              <div class="price">AED ${p.price.toLocaleString()}</div>
+              <button class="btn viewBtn">View Details</button>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderGrid(){
+      const q = searchInput.value.toLowerCase().trim();
+      const cat = categorySelect.value.toLowerCase();
+
+      let results = PRODUCTS.filter(p => {
+        const text = (p.name + ' ' + p.description + ' ' + p.category).toLowerCase();
+        const categoryMatch = cat === 'all' || p.category.toLowerCase() === cat;
+        const textMatch = q === '' || text.includes(q);
+        return categoryMatch && textMatch;
+      });
+
+      const sortVal = sortSelect.value;
+      if(sortVal==='price') results.sort((a,b)=>a.price-b.price);
+      else if(sortVal==='-price') results.sort((a,b)=>b.price-a.price);
+      else if(sortVal==='-discount') results.sort((a,b)=>0);
+
+      productsGrid.innerHTML = results.map(renderProduct).join('');
+      resultsText.textContent = `Showing ${results.length} result${results.length===1?'':'s'}`;
+      emptyState.style.display = results.length ? 'none' : 'block';
+    }
+
+    [searchInput, categorySelect, sortSelect].forEach(el=>el.addEventListener('change',renderGrid));
+    searchInput.addEventListener('keypress', e=>{ if(e.key==='Enter') renderGrid(); });
+    document.getElementById('clearBtn').addEventListener('click', ()=>{ searchInput.value=''; categorySelect.value='all'; sortSelect.value='-discount'; renderGrid(); });
+
+    renderGrid();
+  </script>
+</body>
+</html>

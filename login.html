@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login to Re-Source</title>
+  <style>
+    :root{
+      --accent:#3daba7; --muted:#6b7280; --card:#fff; --max:400px; --radius:12px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    
+body {
+  margin: 0;
+  background: url('login.jpg') no-repeat center center/cover;
+  color: #0f172a;
+  line-height: 1.45;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+    a{text-decoration:none;color:inherit}
+
+    /* Back Button */
+    .back-btn{
+      position:fixed;
+      top:20px;
+      left:20px;
+      background:#fff;
+      border:1px solid rgba(10,37,64,0.1);
+      color:#0f172a;
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+      transition:background 0.2s, transform 0.1s;
+    }
+    .back-btn:hover{
+      background:#f1f5f9;
+      transform:translateY(-1px);
+    }
+
+    .login-card{
+      background: var(--card);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: 0 8px 30px rgba(10,37,64,0.06);
+      border:1px solid rgba(10,37,64,0.04);
+      width:100%;
+      max-width: var(--max);
+    }
+    
+    h2{
+      text-align:center;
+      margin-bottom:24px;
+    }
+    
+    .input-group{
+      display:flex;
+      flex-direction:column;
+      margin-bottom:16px;
+    }
+    
+    label{
+      font-weight:600;
+      margin-bottom:6px;
+    }
+    
+    input[type="email"], input[type="password"]{
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(10,37,64,0.08);
+      font-size:15px;
+    }
+    
+    .btn{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      background:var(--accent);
+      color:white;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      margin-top:8px;
+    }
+
+    .signup-btn{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      background:#e2e8f0;
+      color:#0f172a;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      margin-top:10px;
+    }
+    .signup-btn:hover{
+      background:#d1d5db;
+    }
+    
+    .error{
+      color:red;
+      font-size:13px;
+      margin-top:4px;
+    }
+    
+    .forgot{
+      font-size:13px;
+      color:var(--muted);
+      text-align:right;
+      margin-top:8px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+
+  <div class="login-card">
+    <h2>Login to Re-Source</h2>
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="re@gmail.com">
+      <div id="emailError" class="error"></div>
+    </div>
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="">
+      <div id="passError" class="error"></div>
+    </div>
+    <button class="btn" id="loginBtn">Login</button>
+    <div class="forgot"><a href="#">Forgot password?</a></div>
+    <button class="signup-btn" id="signupBtn">Sign Up</button>
+  </div>
+
+  <script>
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const emailError = document.getElementById('emailError');
+    const passError = document.getElementById('passError');
+
+    loginBtn.addEventListener('click', () => {
+      let valid = true;
+      emailError.textContent = '';
+      passError.textContent = '';
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if(email === ''){
+        emailError.textContent = 'Email cannot be empty';
+        valid = false;
+      } else if(!email.includes('@gmail.com')){
+        emailError.textContent = 'Email must be a valid Gmail address';
+        valid = false;
+      }
+
+      if(password === ''){
+        passError.textContent = 'Password cannot be empty';
+        valid = false;
+      }
+
+      if(valid){
+        // Redirect to marketplace
+        window.location.href = 'marketplace.html';
+      }
+    });
+
+    // Redirect to signup page
+    signupBtn.addEventListener('click', () => {
+      window.location.href = 'signup.html';
+    });
+  </script>
+</body>
+</html>

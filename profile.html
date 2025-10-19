@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Company Dashboard — SurplusConnect</title>
+  <style>
+    :root{
+      --accent:#ff7a18;
+      --accent2:#ffb347;
+      --bg-light:#f8fafc;
+      --card-light:#fff;
+      --muted-light:#64748b;
+
+      --bg-dark:#0f172a;
+      --card-dark:#1e293b;
+      --muted-dark:#94a3b8;
+      --text-dark:#f8fafc;
+
+      --radius:14px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      background:var(--bg-light);
+      color:#0f172a;
+      padding:40px 20px 80px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      min-height:100vh;
+      overflow-x:hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark{
+      background:var(--bg-dark);
+      color:var(--text-dark);
+    }
+
+    /* Back Button */
+    .back-btn{
+      position:fixed;
+      top:20px;
+      left:20px;
+      background:var(--card-light);
+      border:1px solid rgba(10,37,64,0.1);
+      color:#0f172a;
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+      transition:0.3s;
+      z-index:200;
+    }
+    body.dark .back-btn{
+      background:var(--card-dark);
+      color:var(--text-dark);
+      border:1px solid rgba(255,255,255,0.2);
+    }
+    .back-btn:hover{
+      background:var(--accent);
+      color:white;
+      transform:translateY(-2px) scale(1.05);
+    }
+
+    .profile-container{
+      background:var(--card-light);
+      border-radius:var(--radius);
+      box-shadow:0 10px 30px rgba(0,0,0,0.07);
+      padding:30px;
+      max-width:900px;
+      width:100%;
+      animation:fadeInUp 0.6s ease-out;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark .profile-container{
+      background:var(--card-dark);
+      color:var(--text-dark);
+      box-shadow:0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    @keyframes fadeInUp{
+      from{opacity:0;transform:translateY(40px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:25px;
+    }
+
+    /* Animated Gradient Company Name */
+    .company-name{
+      font-size:1.9em;
+      font-weight:700;
+      background: linear-gradient(90deg,var(--accent),var(--accent2),#f97316,var(--accent));
+      background-size: 400% 400%;
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      animation:gradientMove 6s ease infinite;
+    }
+    @keyframes gradientMove{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    .logout-btn{
+      background:var(--accent);
+      color:white;
+      border:none;
+      padding:10px 18px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.25s;
+    }
+    .logout-btn:hover{background:#ff6b0a;transform:translateY(-2px) scale(1.05);}
+
+    .info-card{
+      background:#fffaf7;
+      border:1px solid rgba(10,37,64,0.05);
+      padding:20px;
+      border-radius:var(--radius);
+      margin-bottom:20px;
+      animation:fadeSlide 0.8s ease forwards;
+      transition:transform 0.3s, box-shadow 0.3s;
+    }
+    body.dark .info-card{
+      background:var(--card-dark);
+      border:1px solid rgba(255,255,255,0.1);
+    }
+    .info-card:hover{
+      transform:translateY(-4px) scale(1.02);
+      box-shadow:0 15px 35px rgba(0,0,0,0.5);
+    }
+    @keyframes fadeSlide{
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    h3{
+      margin-top:0;
+      color:#0f172a;
+      border-left:5px solid var(--accent);
+      padding-left:10px;
+      animation:fadeInText 1s ease forwards;
+    }
+    body.dark h3{color:var(--text-dark);}
+    @keyframes fadeInText{
+      from{opacity:0;transform:translateX(-20px);}
+      to{opacity:1;transform:translateX(0);}
+    }
+
+    .info-row{
+      display:flex;
+      justify-content:space-between;
+      padding:10px 0;
+      border-bottom:1px solid rgba(10,37,64,0.05);
+    }
+    body.dark .info-row{border-bottom:1px solid rgba(255,255,255,0.1);}
+    .info-row:last-child{border-bottom:none;}
+    .info-label{color:var(--muted-light);}
+    body.dark .info-label{color:var(--muted-dark);}
+    .info-value{font-weight:600;}
+
+    /* Add Listing Button */
+    .add-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      background: linear-gradient(90deg,var(--accent),var(--accent2));
+      border:none;
+      color:white;
+      font-weight:600;
+      padding:12px 20px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:0.3s;
+      margin-bottom:10px;
+      animation:bounceIn 0.6s ease, gradientButton 4s ease infinite;
+      background-size: 200% 200%;
+    }
+    .add-btn:hover{
+      transform:scale(1.08) rotate(-2deg);
+      box-shadow:0 8px 20px rgba(255,122,24,0.4);
+    }
+    .add-btn span{font-size:20px;}
+    @keyframes bounceIn{
+      0%{transform:scale(0.5);opacity:0;}
+      60%{transform:scale(1.1);opacity:1;}
+      80%{transform:scale(0.95);}
+      100%{transform:scale(1);}
+    }
+    @keyframes gradientButton{
+      0%{background-position:0% 50%;}
+      50%{background-position:100% 50%;}
+      100%{background-position:0% 50%;}
+    }
+
+    /* Listing Grid */
+    .listing-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-top:10px;
+    }
+
+    .listing-card{
+      background:white;
+      border-radius:var(--radius);
+      border:1px solid rgba(10,37,64,0.05);
+      padding:16px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.05);
+      transition:transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+      opacity:0;
+      animation:fadeInCard 0.5s forwards;
+    }
+    body.dark .listing-card{
+      background:var(--card-dark);
+      border:1px solid rgba(255,255,255,0.1);
+      color:var(--text-dark);
+    }
+    .listing-card:hover{
+      transform:translateY(-5px) scale(1.03) rotateX(3deg);
+      box-shadow:0 12px 25px rgba(0,0,0,0.5);
+      filter:brightness(1.05);
+    }
+    @keyframes fadeInCard{
+      from{opacity:0;transform:translateY(20px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    .listing-card img{
+      width:100%;
+      height:160px;
+      border-radius:10px;
+      object-fit:cover;
+      margin-bottom:10px;
+      transition:transform 0.3s ease, filter 0.3s;
+    }
+    .listing-card img:hover{transform:scale(1.05) rotate(1deg);filter:brightness(1.1);}
+    .listing-card h4{margin:4px 0;font-size:17px;}
+    .listing-card p{margin:3px 0;color:var(--muted-light);}
+    body.dark .listing-card p{color:var(--muted-dark);}
+    .status{
+      font-weight:700;
+      padding:5px 10px;
+      border-radius:20px;
+      font-size:13px;
+      display:inline-block;
+      margin-top:5px;
+    }
+    .sold{background:#22c55e;color:#1e293b;}
+    .not-sold{background:#dc2626;color:white;}
+
+    /* Modal */
+    .modal{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.4);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:100;
+    }
+    .modal-content{
+      background:white;
+      padding:30px;
+      border-radius:var(--radius);
+      width:90%;
+      max-width:420px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.1);
+      animation:popUp 0.4s ease;
+      transition:background 0.3s, color 0.3s;
+    }
+    body.dark .modal-content{
+      background:var(--card-dark);
+      color:var(--text-dark);
+      box-shadow:0 15px 30px rgba(0,0,0,0.7);
+    }
+    @keyframes popUp{
+      from{transform:scale(0.8);opacity:0;}
+      to{transform:scale(1);opacity:1;}
+    }
+
+    .modal-content input{
+      padding:10px 12px;
+      border:1px solid rgba(10,37,64,0.1);
+      border-radius:8px;
+      font-size:15px;
+      transition:background 0.3s, color 0.3s, border 0.3s;
+    }
+    body.dark .modal-content input{
+      background:var(--bg-dark);
+      color:var(--text-dark);
+      border:1px solid rgba(255,255,255,0.2);
+    }
+
+    .close-btn{
+      background:#e5e7eb;
+      color:#111;
+      padding:10px 14px;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      width:48%;
+    }
+    .save-btn{
+      background:var(--accent);
+      color:white;
+      padding:10px 14px;
+      border:none;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      width:48%;
+    }
+    .btn-row{
+      display:flex;
+      justify-content:space-between;
+      margin-top:12px;
+    }
+
+    /* Footer */
+    .footer{
+      margin-top:30px;
+      text-align:center;
+      color:var(--muted-light);
+      font-size:14px;
+    }
+    body.dark .footer{color:var(--muted-dark);}
+
+    /* Carbon bar animation */
+    @keyframes barGrow{
+      from{width:0%;}
+      to{width:60%;}
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="goToMarketplace()">← Back to Marketplace</button>
+
+  <div class="profile-container">
+    <div class="header">
+      <div class="company-name">Versatile Global Trading</div>
+      <div style="display:flex; gap:10px;">
+        <button class="logout-btn" onclick="logout()">Log Out</button>
+        <button onclick="toggleDark()" style="padding:10px;border-radius:8px;cursor:pointer;">🌓</button>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <h3>👤 Account Information</h3>
+      <div class="info-row"><div class="info-label">Username</div><div class="info-value">versatile_global</div></div>
+      <div class="info-row"><div class="info-label">Email</div><div class="info-value">contact@versatileglobal.ae</div></div>
+      <div class="info-row"><div class="info-label">Trade License No.</div><div class="info-value">TRD-*****-AE</div></div>
+    </div>
+
+    <div class="info-card">
+      <h3>🌿 Carbon Emissions Tracker</h3>
+      <p style="margin:8px 0;color:#475569;">Estimated monthly emissions: <b>2.3 tonnes CO₂</b></p>
+      <div style="height:14px;background:#f1f5f9;border-radius:7px;overflow:hidden;margin-top:8px;">
+        <div style="height:100%;background:linear-gradient(to right,#22c55e,#84cc16,#facc15,#f97316,#ef4444);width:60%;animation:barGrow 2s ease;"></div>
+      </div>
+      <p style="font-size:13px;margin-top:8px;color:#94a3b8;">Goal: Reduce by 20% before 2026</p>
+    </div>
+
+    <div class="info-card">
+      <h3>📦 Your Listings</h3>
+      <button class="add-btn" onclick="openModal()"><span>＋</span>Add New Listing</button>
+      <div class="listing-grid" id="listingGrid"></div>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 SurplusConnect — Empowering UAE Circular Economy ♻</div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <h3>Add New Listing</h3>
+      <div class="input-group">
+        <label>Item Image</label>
+        <input type="file" id="itemImage">
+      </div>
+      <div class="input-group">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="Steel pipes">
+      </div>
+      <div class="input-group">
+        <label>Quantity (kg / units)</label>
+        <input type="text" id="itemQty" placeholder="250 kg">
+      </div>
+      <div class="input-group">
+        <label>Location</label>
+        <input type="text" id="itemLoc" placeholder="Dubai, UAE">
+      </div>
+      <div class="btn-row">
+        <button class="close-btn" onclick="closeModal()">Cancel</button>
+        <button class="save-btn" onclick="saveListing()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const listingGrid = document.getElementById('listingGrid');
+
+    const dummyListings = [
+      { img:'https://m.media-amazon.com/images/I/41VQ7xMZnSL.AC_UF1000,1000_QL80.jpg', name:'Aluminum Sheets', qty:'500 kg', loc:'Sharjah', sold:false },
+      { img:'https://s.alicdn.com/@sc04/kf/Heff2a74945164e52ad8913db55c7c2a9d/Large-Diameter-Corrugated-Sewer-Pipe-DN600-Used-in-Agricultural-Irrigation-and-Water-Transfer.jpg_300x300.jpg', name:'Used PVC Pipes', qty:'200 units', loc:'Dubai', sold:true },
+      { img:'https://cdn.shopify.com/s/files/1/2262/3251/products/recycled-4-way-wood-pallets_530x.jpg?v=1709677108', name:'Wooden Pallets', qty:'350 units', loc:'Abu Dhabi', sold:false },
+    ];
+
+    function renderListings(){
+      listingGrid.innerHTML = '';
+      dummyListings.forEach((item,index)=>{
+        const card = document.createElement('div');
+        card.className='listing-card';
+        card.style.animationDelay = (index*0.1)+'s';
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h4>${item.name}</h4>
+          <p>Quantity: ${item.qty}</p>
+          <p>Location: ${item.loc}</p>
+          <span class="status ${item.sold?'sold':'not-sold'}">${item.sold?'Sold':'Not Sold'}</span>
+        `;
+        listingGrid.appendChild(card);
+      });
+    }
+    renderListings();
+
+    function openModal(){ modal.style.display='flex'; }
+    function closeModal(){ modal.style.display='none'; }
+
+    function saveListing(){
+      const name=document.getElementById('itemName').value;
+      const qty=document.getElementById('itemQty').value;
+      const loc=document.getElementById('itemLoc').value;
+      const img=document.getElementById('itemImage').files[0];
+
+      if(!name||!qty||!loc){alert('Please fill all fields');return;}
+      const imgURL = img ? URL.createObjectURL(img) : 'https://via.placeholder.com/300x200';
+      dummyListings.push({img:imgURL,name,qty,loc,sold:false});
+      renderListings();
+      closeModal();
+    }
+
+    function logout(){
+      alert('Logged out successfully!');
+      window.location.href='login.html';
+    }
+
+    function goToMarketplace(){
+      window.location.href='marketplace.html';
+    }
+
+    function toggleDark(){
+      document.body.classList.toggle('dark');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="View detailed surplus product information from UAE SMEs." />
+<title>Product Details — SurplusConnect</title>
+<style>
+:root {
+  --accent:#ff7a18; --accent2:#ffb347; --muted:#6b7280; --card:#fff; --max:1100px; --radius:20px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:#f8fafc;color:#0f172a;line-height:1.45;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* CONTAINER ANIMATION */
+.container{
+  max-width:var(--max);margin:36px auto;padding:0 40px;
+  opacity:0; transform:translateY(40px);
+  animation:fadeUp 0.8s forwards;
+}
+@keyframes fadeUp{
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* NAVBAR */
+.navbar{
+  background-color:#0f172a;color:#fff;padding:12px 0;
+  border-bottom:2px solid rgba(255,122,24,0.4);
+  position:sticky;top:0;z-index:100;
+  animation:slideDown 0.6s ease;
+}
+@keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+.nav-content{display:flex;justify-content:space-between;align-items:center;}
+.nav-left{display:flex;align-items:center;gap:10px;}
+.nav-logo{
+  width:38px;height:38px;border-radius:10px;
+  background:linear-gradient(135deg,#fb923c,#ffb86b);
+  display:flex;justify-content:center;align-items:center;font-size:20px;
+  animation:logoBounce 1s infinite alternate;
+}
+@keyframes logoBounce{from{transform:scale(1)}to{transform:scale(1.1)}}
+.nav-title .nav-sub{font-size:12px;color:#fb923c;font-weight:600;}
+.nav-right{display:flex;gap:18px;align-items:center;}
+.nav-link{color:#fff;font-weight:600;font-size:15px;position:relative;transition:0.3s;}
+.nav-link:hover{color:#ffb86b;transform:scale(1.05);}
+
+/* PRODUCT LAYOUT */
+.product-container{display:grid;gap:50px;grid-template-columns:1fr;}
+@media(min-width:768px){.product-container{grid-template-columns:1fr 1fr;}}
+.product-image{
+  width:100%;aspect-ratio:1/1;border-radius:20px;
+  background-size:contain;background-position:center;background-repeat:no-repeat;
+  border:1px solid rgba(0,0,0,0.08);box-shadow:0 6px 18px rgba(10,37,64,0.05);
+  transform:scale(0.95) rotateX(5deg);
+  animation:imgEntrance 0.8s forwards;
+  transition:transform 0.5s ease, box-shadow 0.4s ease;
+  cursor:pointer;
+}
+.product-image:hover{transform:scale(1.1) rotateX(0deg) rotateY(2deg);box-shadow:0 20px 40px rgba(0,0,0,0.4);}
+
+@keyframes imgEntrance{
+  from{opacity:0;transform:translateY(40px) scale(0.9) rotateX(10deg);}
+  to{opacity:1;transform:translateY(0) scale(1) rotateX(5deg);}
+}
+
+.product-card{
+  background:var(--card); padding:18px; border-radius:24px;
+  box-shadow:0 8px 24px rgba(10,37,64,0.06); border:1px solid rgba(10,37,64,0.04);
+  display:flex; flex-direction:column; gap:16px; animation:cardEntrance 0.8s forwards;
+}
+@keyframes cardEntrance{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+
+/* BADGES & BUTTONS */
+.badge{
+  padding:6px 14px;border-radius:999px;font-weight:700;font-size:13px;display:inline-block;
+  animation:badgePop 0.6s ease;
+}
+@keyframes badgePop{0%{transform:scale(0.5);opacity:0}100%{transform:scale(1);opacity:1}}
+
+.btn{
+  padding:12px;border:none;border-radius:14px;font-weight:700;cursor:pointer;transition:0.3s;
+}
+.btn-primary{
+  background:linear-gradient(90deg,#ff7a18,#ffb347);
+  color:white; animation:btnGradient 3s ease infinite alternate;background-size:200% 200%;
+}
+@keyframes btnGradient{0%{background-position:0% 50%}100%{background-position:100% 50%}}
+.btn-primary:hover{transform:scale(1.1) rotate(-2deg);box-shadow:0 8px 20px rgba(255,122,24,0.4);}
+.btn-ghost{background:transparent;border:1px solid rgba(10,37,64,0.1);color:#0f172a;}
+.btn-ghost:hover{transform:scale(1.05);color:#ff7a18;}
+
+input[type=number]{
+  width:80px;padding:8px;border-radius:10px;border:1px solid rgba(10,37,64,0.1);
+  font-size:14px;font-weight:700;text-align:center;transition:0.3s;
+}
+input[type=number]:focus{outline:none;box-shadow:0 0 8px var(--accent);animation:pulse 1s infinite alternate;}
+@keyframes pulse{0%{transform:scale(1)}100%{transform:scale(1.05)}}
+
+.muted{color:var(--muted);}
+.title-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+.product-title{
+  font-size:28px;font-weight:800;margin:0;color:#0f172a;
+  animation:titleBounce 0.8s ease forwards;
+}
+@keyframes titleBounce{0%{opacity:0;transform:translateY(-20px) scale(0.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+
+footer{padding:35px 0;text-align:center;color:var(--muted);font-size:14px;opacity:0;animation:fadeUp 1s forwards 0.6s;}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="container nav-content">
+    <div class="nav-left">
+      <div class="nav-logo">S</div>
+      <div class="nav-title">
+        <div class="nav-sub">UAE B2B MARKETPLACE</div>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a href="index.html" class="nav-link">🏠 Home</a>
+      <a href="marketplace.html" class="nav-link">🧱 Marketplace</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container product-card">
+  <button class="btn btn-ghost" onclick="history.back()">← Back to Marketplace</button>
+  <div id="productDetail" class="product-container"></div>
+</main>
+
+<footer>
+  <div>© <span id="year"></span> SurplusConnect — Marketplace</div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+// PRODUCT DATA WITH DETAILED DESCRIPTIONS
+const PRODUCTS = [
+  { id:1, name:"Solar Panels - Masdar city Installation Surplus", description:"High-efficiency Canadian Solar 450W monocrystalline panels from Masdar City project surplus. Ideal for residential, commercial, or off-grid energy solutions. Panels are lightly used, tested, and come with robust frames suitable for rooftop or ground-mounted installations.", category:"Building Materials", condition:"Good", price:1200, quantity:15, image:"https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80", location:"Dubai", created_date:"2025-09-20" },
+  { id:2, name:"Ergonomic Office Chairs (Bulk Lot)", description:"Assorted ergonomic chairs designed for optimal lumbar support and comfort, suitable for startups, offices, or co-working spaces. Each chair has adjustable height, swivel, and tilt functions. Gently used but in excellent working condition, bulk lot of 20 units.", category:"Office Furniture", condition:"Like New", price:800, quantity:20, image:"https://images.thdstatic.com/productImages/f88ea17b-9545-4294-859a-da704cc5c2c7/svn/black-costway-guest-office-chairs-hcst01502-64_600.jpg", location:"Sharjah", created_date:"2025-09-28" },
+  { id:3, name:"Server Rack 42U", description:"Dell-certified 42U server rack in excellent condition. Includes lockable doors, cable management, and adjustable mounting rails. Ideal for secure IT server deployment.", category:"IT Hardware", condition:"Like New", price:1500, quantity:3, image:"https://download.schneider-electric.com/files?p_Doc_Ref=PB501421&p_File_Type=rendition_369_jpg&default_image=DefaultProductImage.png", location:"Abu Dhabi", created_date:"2025-10-01" },
+  { id:4, name:"Bulk Laptops (HP, Dell)", description:"Refurbished bulk lot of 15 laptops, perfect for offices or educational institutions. Tested, updated, and pre-installed with productivity software. Warranty included where applicable.", category:"IT Hardware", condition:"Good", price:7000, quantity:15, image:"https://cpimg.tistatic.com/08230342/b/5/extra-08230342.jpg", location:"Dubai", created_date:"2025-08-15" },
+  { id:5, name:"Industrial Air Compressor", description:"Heavy-duty 185 CFM compressor, ideal for workshops or small manufacturing. Recently serviced, suitable for pneumatic tools, spray painting, and high-volume air operations.", category:"Machinery", condition:"Good", price:4000, quantity:2, image:"https://kandasrental.com/wp-content/uploads/2023/06/185-CFM-AIRCOMPRESSOR.jpg", location:"Sharjah", created_date:"2025-07-12" },
+  { id:6, name:"Forklift (Electric)", description:"Electric forklift with low hours, fully functional, eco-friendly, and perfect for warehouses or factories. Easy maneuverability with safety features for indoor use.", category:"Vehicles", condition:"Like New", price:9000, quantity:1, image:"https://cdn.truckscout24.com/data/listing/img/vga/ts/10/34/19609211-01.jpg?v=1755003969", location:"Dubai", created_date:"2025-06-20" },
+  { id:7, name:"Pallets of Branded Headphones", description:"Bulk lot of 25 open-box branded headphones. Tested for quality and functionality. Ideal for resale or promotional purposes. Includes popular premium brands.", category:"Electronics", condition:"Like New", price:4800, quantity:25, image:"https://images.merstatic.com/imgcache/resized/images/offer/2021/05/11/whatsapp-image-2021-05-10-at-140944-4-1620725042-1620725659.jpeg", location:"Dubai", created_date:"2025-10-14" },
+  { id:8, name:"Construction Tools Bulk Lot", description:"Mixed set of tools for small construction businesses. Includes hammers, drills, saws, and measuring equipment. All tools functional and lightly used.", category:"Tools", condition:"Fair", price:650, quantity:30, image:"https://i.redd.it/bulk-tool-estimate-help-needed-v0-3vibificwr9c1.jpg?width=1880&format=pjpg&auto=webp&s=a0a0e40d1b8ecb02f4a15720daae6ea5bf057c51", location:"Ajman", created_date:"2025-08-05" },
+  { id:9, name:"Building Materials — Tiles (Pallet)", description:"Mixed-size ceramic and porcelain tiles. Durable, scratch-resistant, perfect for renovations or small construction projects.", category:"Building Materials", condition:"New", price:2200, quantity:50, image:"https://www.shutterstock.com/image-photo/paving-slabs-factory-tiles-piled-260nw-1060959992.jpg", location:"Dubai", created_date:"2025-06-11" },
+  { id:10, name:"LED Monitors (Bulk Lot)", description:"20 units of 24-inch LED monitors, full HD resolution, energy-efficient, slim design. Ideal for office setups, schools, or training centers.", category:"IT Hardware", condition:"Like New", price:4000, quantity:20, image:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSebJQFV7qRu0TOg_63AE2U6WQrJoL_E2hwpg&s", location:"Sharjah", created_date:"2025-09-30" },
+  { id:11, name:"Medical Equipment - Abu Dhabi Hospital Upgrade", description:"Hospital-grade furniture and equipment from Abu Dhabi modernization. Includes adjustable patient beds, examination tables, and storage units. Sanitized and tested for immediate use.", category:"Medical Equipment", condition:"Like New", price:8000, quantity:5, image:"https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&q=80", location:"Abu Dhabi", created_date:"2025-10-18" },
+  { id:12, name:"Air Conditioning Units - Sharjah Villa Complex", description:"Split AC units (1.5-3 ton) from Sharjah renovation. Brands: Samsung, LG, Daikin. Energy-efficient, excellent working condition, includes installation brackets. Suitable for villas, offices, or small commercial spaces.", category:"Industrial Equipment", condition:"Like New", price:3500, quantity:10, image:"https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=800&q=80", location:"Sharjah", created_date:"2025-10-18" }
+];
+
+// GET PRODUCT ID FROM URL
+const urlParams=new URLSearchParams(window.location.search);
+const productId=parseInt(urlParams.get("id"))||1;
+const product=PRODUCTS.find(p=>p.id===productId)||PRODUCTS[0];
+const productDetailEl=document.getElementById("productDetail");
+
+// ESCAPE HTML
+function escapeHtml(s){if(!s)return'';return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+
+// RENDER PRODUCT DETAILS
+if(!product){
+  productDetailEl.innerHTML=`<div class="product-image" style="background-image:url('');"></div>
+  <div class="product-card"><h2>Product not found</h2><button class="btn btn-primary" onclick="location.href='marketplace.html'">Back to Marketplace</button></div>`;
+}else{
+  productDetailEl.innerHTML=`
+  <div class="product-image" style="background-image:url('${product.image}')"></div>
+  <div class="product-card">
+    <div class="title-row"><h1 class="product-title">${escapeHtml(product.name)}</h1></div>
+    <p style="margin:8px 0;color:#374151">${escapeHtml(product.description)}</p>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px;color:#374151">
+      <div><span class="badge">${escapeHtml(product.category)}</span></div>
+      <div><span class="badge">📍 ${escapeHtml(product.location)}</span></div>
+      <div><span class="muted">Available:</span> <strong>${Number(product.quantity)}</strong> units</div>
+      <div><span class="muted">Posted on:</span> <span class="muted">${new Date(product.created_date).toLocaleDateString()}</span></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+      <div style="font-size:22px;font-weight:900;color:var(--accent)">AED ${Number(product.price).toLocaleString()}</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+        <label for="quantityInput" class="muted" style="font-weight:700">Quantity</label>
+        <input id="quantityInput" type="number" min="1" max="${product.quantity}" value="1"/>
+        <button id="purchaseBtn" class="btn btn-primary" type="button">Purchase Now</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById("purchaseBtn").addEventListener("click",()=>{
+    const qtyEl=document.getElementById("quantityInput");
+    let qty=Math.min(Math.max(1,Math.floor(Number(qtyEl.value)||1)),product.quantity);
+    alert(`Purchase successful!\nYou bought ${qty} × ${product.name}`);
+    window.location.href='marketplace.html';
+  });
+}
+</script>
+</body>
+</html>

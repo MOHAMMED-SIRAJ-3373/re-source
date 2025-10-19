@@ -1,0 +1,20 @@
+style="background:linear-gradient(#000000,#80b4b2)">
+
+<script>
+  // ✅ Slide-in animation trigger
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelector('.hero-content').classList.add('slide-in');
+  });
+</script>
+
+  /* Slide-in animation for hero content */
+@keyframes slideInUp {
+  0% {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

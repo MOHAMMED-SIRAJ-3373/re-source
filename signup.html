@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign Up - Re-source Account</title>
+  <style>
+    :root{
+      --accent:#3daba7; 
+      --muted:#6b7280; 
+      --card:#fff; 
+      --max:420px; 
+      --radius:12px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: url('signup.jpg') no-repeat center center/cover;
+  color: #0f172a;
+  line-height: 1.45;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+    a{text-decoration:none;color:inherit}
+
+    /* Back Button */
+    .back-btn{
+      position:fixed;
+      top:20px;
+      left:20px;
+      background:#fff;
+      border:1px solid rgba(10,37,64,0.1);
+      color:#0f172a;
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:600;
+      cursor:pointer;
+      box-shadow:0 4px 10px rgba(0,0,0,0.05);
+      transition:background 0.2s, transform 0.1s;
+    }
+    .back-btn:hover{
+      background:#f1f5f9;
+      transform:translateY(-1px);
+    }
+
+.signup-card{
+  background: var(--card);
+  padding: 32px; /* slightly more padding */
+  border-radius: var(--radius);
+  box-shadow: 0 8px 30px rgba(10,37,64,0.06);
+  border:1px solid rgba(10,37,64,0.04);
+  width:90%;           /* make it wider relative to viewport */
+  max-width: 600px;    /* increase from var(--max) if it was smaller */
+  overflow-y:auto;
+  max-height:95vh;
+}
+
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"],
+.input-group input[type="file"] {
+  width: 100%;       /* ensure inputs span full width */
+  font-size: 16px;   /* slightly bigger text for clarity */
+  padding:14px;      /* more padding inside inputs */
+}
+
+
+    label{
+      font-weight:600;
+      margin-bottom:6px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"]{
+      padding:12px 14px;
+      border-radius:10px;
+      border:1px solid rgba(10,37,64,0.08);
+      font-size:15px;
+    }
+
+    input[type="file"]{
+      border:1px dashed rgba(10,37,64,0.15);
+      border-radius:10px;
+      padding:10px;
+      background:#f9fafb;
+      font-size:14px;
+      cursor:pointer;
+    }
+
+    .file-note{
+      font-size:12px;
+      color:var(--muted);
+      margin-top:4px;
+    }
+
+    .btn{
+      width:100%;
+      padding:12px;
+      border-radius:10px;
+      background:var(--accent);
+      color:white;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+      margin-top:10px;
+    }
+
+    .error{
+      color:red;
+      font-size:13px;
+      margin-top:4px;
+    }
+
+    .login-redirect{
+      text-align:center;
+      margin-top:14px;
+      font-size:14px;
+      color:var(--muted);
+    }
+
+    .login-redirect a{
+      color:var(--accent);
+      font-weight:600;
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.location.href='index.html'">← Back to Home</button>
+
+  <div class="signup-card">
+    <h2>Create your Re-Source Account</h2>
+
+    <div class="input-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="John Doe">
+      <div id="nameError" class="error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="company">Company Name</label>
+      <input type="text" id="company" placeholder="eg: Versatile Global Trading LLC">
+      <div id="companyError" class="error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="resource@gmail.com">
+      <div id="emailError" class="error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="license">Trade License (PDF)</label>
+      <input type="file" id="license" accept=".pdf, image/*">
+      <div id="licenseError" class="error"></div>
+      <div class="file-note">Upload your valid trade license for verification.</div>
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="">
+      <div id="passError" class="error"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="confirm">Confirm Password</label>
+      <input type="password" id="confirm" placeholder="">
+      <div id="confirmError" class="error"></div>
+    </div>
+
+    <button class="btn" id="signupBtn">Sign Up</button>
+
+    <div class="login-redirect">
+      Already have an account? <a href="login.html">Log in</a>
+    </div>
+  </div>
+
+  <script>
+    const signupBtn = document.getElementById('signupBtn');
+    const nameInput = document.getElementById('name');
+    const companyInput = document.getElementById('company');
+    const emailInput = document.getElementById('email');
+    const licenseInput = document.getElementById('license');
+    const passwordInput = document.getElementById('password');
+    const confirmInput = document.getElementById('confirm');
+
+    const nameError = document.getElementById('nameError');
+    const companyError = document.getElementById('companyError');
+    const emailError = document.getElementById('emailError');
+    const licenseError = document.getElementById('licenseError');
+    const passError = document.getElementById('passError');
+    const confirmError = document.getElementById('confirmError');
+
+    signupBtn.addEventListener('click', () => {
+      let valid = true;
+      nameError.textContent = '';
+      companyError.textContent = '';
+      emailError.textContent = '';
+      licenseError.textContent = '';
+      passError.textContent = '';
+      confirmError.textContent = '';
+
+      const name = nameInput.value.trim();
+      const company = companyInput.value.trim();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const confirm = confirmInput.value.trim();
+      const licenseFile = licenseInput.files[0];
+
+      if(name === ''){
+        nameError.textContent = 'Name cannot be empty';
+        valid = false;
+      }
+
+      if(company === ''){
+        companyError.textContent = 'Company name is required';
+        valid = false;
+      }
+
+      if(email === ''){
+        emailError.textContent = 'Email cannot be empty';
+        valid = false;
+      } else if(!email.includes('@gmail.com')){
+        emailError.textContent = 'Email must be a valid Gmail address';
+        valid = false;
+      }
+
+      if(!licenseFile){
+        licenseError.textContent = 'Please upload your trade license';
+        valid = false;
+      } else if(!(/\.(pdf|jpg|jpeg|png)$/i).test(licenseFile.name)){
+        licenseError.textContent = 'Only PDF or image files are allowed';
+        valid = false;
+      }
+
+      if(password === ''){
+        passError.textContent = 'Password cannot be empty';
+        valid = false;
+      } else if(password.length < 6){
+        passError.textContent = 'Password must be at least 6 characters';
+        valid = false;
+      }
+
+      if(confirm === ''){
+        confirmError.textContent = 'Please confirm your password';
+        valid = false;
+      } else if(password !== confirm){
+        confirmError.textContent = 'Passwords do not match';
+        valid = false;
+      }
+
+      if(valid){
+        alert('Account created successfully!');
+        window.location.href = 'login.html';
+      }
+    });
+  </script>
+</body>
+</html>
