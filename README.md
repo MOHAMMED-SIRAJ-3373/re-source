@@ -6,7 +6,7 @@
 [![Tech Stack](https://img.shields.io/badge/Tech-Vite%20%7C%20ES6%2B%20%7C%20Vanilla%20CSS3-3daba7?style=for-the-badge)](https://github.com/MOHAMMED-SIRAJ-3373/re-source)
 [![Market Focus](https://img.shields.io/badge/Market-UAE%20Seven%20Emirates-ff7a18?style=for-the-badge)](https://github.com/MOHAMMED-SIRAJ-3373/re-source)
 
-> **Re-Source** is a B2B surplus inventory marketplace built specifically for the United Arab Emirates (UAE). The platform connects verified enterprises, contractors, and suppliers across all seven Emirates to trade excess materials, machinery, IT hardware, and equipment — driving cost efficiency and advancing the circular economy in alignment with **UAE Vision 2031**.
+> **Re-Source** is a B2B surplus inventory marketplace built specifically for the United Arab Emirates (UAE). The platform connects verified enterprises, contractors, and suppliers across all seven Emirates to trade excess materials, machinery, IT hardware, and equipment - driving cost efficiency and advancing the circular economy in alignment with **UAE Vision 2031**.
 
 👉 **Live URL**: [https://MOHAMMED-SIRAJ-3373.github.io/re-source/](https://MOHAMMED-SIRAJ-3373.github.io/re-source/)
 
@@ -109,37 +109,6 @@ re-source/
 ├── vite.config.js              # Vite build configuration (base: './')
 └── README.md
 ```
-
----
-
-## 🛠️ Local Development Guide
-
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) (v18 or higher) installed.
-
-### 1. Clone & Install Dependencies
-```bash
-git clone https://github.com/MOHAMMED-SIRAJ-3373/re-source.git
-cd re-source
-npm install
-```
-
-### 2. Run Local Development Server
-```bash
-npm run dev
-```
-Open your browser at `http://localhost:3000` to view the application with Hot Module Replacement (HMR).
-
-### 3. Build & Preview Production Bundle
-```bash
-# Build production bundle to dist/
-npm run build
-
-# Preview production build locally
-npm run preview
-```
-
----
 
 ## 📄 License
 
