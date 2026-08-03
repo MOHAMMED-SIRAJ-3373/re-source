@@ -1,4 +1,4 @@
-# ♻️ Re-Source (SurplusConnect UAE) — B2B Surplus Marketplace
+# ♻️ Re-Source - B2B Surplus Marketplace
 
 [![Live GitHub Pages Demo](https://img.shields.io/badge/Live%20Demo-GitHub%20Pages-00732f?style=for-the-badge&logo=github&logoColor=white)](https://MOHAMMED-SIRAJ-3373.github.io/re-source/)
 [![Deploy to GitHub Pages](https://github.com/MOHAMMED-SIRAJ-3373/re-source/actions/workflows/deploy-pages.yml/badge.svg)](https://github.com/MOHAMMED-SIRAJ-3373/re-source/actions/workflows/deploy-pages.yml)
